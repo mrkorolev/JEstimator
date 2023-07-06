@@ -6,12 +6,17 @@ import com.company.data.TableStorage;
 import com.company.formulas.Formulas;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
+
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Stream;
 
 /*
     Class that represents the list of actions (and helper methods) for the software
@@ -72,19 +77,40 @@ public class Actions {
      */
     public static void outputToPdf(int decimalPlaces){
         Scanner sc = new Scanner(System.in);
-        String filename = "-";
+        String filename;
         while(true){
-            System.out.print("Name for file:     ");
+            System.out.print("Name for file (no extension): ");
             filename = sc.nextLine();
-            if(Objects.equals(filename, null) || filename.isEmpty()){
-                System.out.println("Non-empty file name is accepted only!");
+            if(Objects.equals(filename, null) || filename.isEmpty() || filename.isBlank()){
+                System.out.println("Only non-empty file names (without blanks) are accepted!\n");
+            }else if(Files.exists(Path.of(filename + ".pdf"))){
+                System.out.println("File with name " + filename + ".pdf already exists!\n");
             }else{
-                break;
+                if(checkFileNameString(filename)){
+                    break;
+                }else{
+                    System.out.println(filename + ": abnormal file name (special characters not allowed)!\n");
+                }
             }
         }
         generatePdfTable(filename, decimalPlaces);
         System.out.println("File with name " + filename + ".pdf successfully created");
         System.out.println("======================================================\n");
+    }
+
+    public static boolean checkFileNameString(String filenameToCheck){
+        return filenameToCheck.transform(str -> {
+            List<Integer> codes = new ArrayList<>();
+            for(int i = 0; i < str.length(); i++){
+                codes.add(Character.hashCode(str.charAt(i)));
+            }
+            return codes;
+        }).stream().
+                filter(code ->
+                    ((code >= 48) && (code <= 57)) ||
+                    ((code >= 65) && (code <= 90)) ||
+                    ((code >= 97) && (code <= 122)))
+                    .count() == filenameToCheck.length();
     }
 
     public static void generatePdfTable(String pdfFileName, int decimalPlaces){
