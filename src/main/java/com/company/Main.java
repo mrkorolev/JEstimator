@@ -15,7 +15,7 @@ public class Main {
         @Parameter(names = {"-h", "--help"}, description = "Get description of usage", help = true, order = 0)
         private boolean help;
 
-        @Parameter(names = {"-dp", "--decimal-places"}, description = "Numer of decimal places used for values in normal table", order = 1, required = true)
+        @Parameter(names = {"-dp", "--decimal-places"}, description = "Number of decimal places used for values in normal table", order = 1, required = true)
         private int decimalPlaces;
 
         @Parameter(names = {"-divs", "--divisions"}, description = "Number of divisions (delta x) used in every numerical method", order = 2, required = true)

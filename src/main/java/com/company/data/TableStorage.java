@@ -12,7 +12,6 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import lombok.Getter;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -43,7 +42,8 @@ public class TableStorage {
                         Formulas.SIMPSON,
                         x0, x0 + i*stepRows + j*stepColumns,
                         Main.arguments.getDivisions()), Main.arguments.getDecimalPlaces());     // CHANGE!!!
-                this.tableValues.add(new ObjectZ(Calculations.roundToDecimalPlaces(currentRow, 1), Calculations.roundToDecimalPlaces(j*stepColumns, 2), prob));
+
+                tableValues.add(new ObjectZ(Calculations.roundToDecimalPlaces(currentRow, 1), Calculations.roundToDecimalPlaces(j*stepColumns, 2), prob));
             }
         }
     }
